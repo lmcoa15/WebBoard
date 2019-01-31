@@ -139,7 +139,6 @@ public class HomeController {
 //		req.setAttribute("posts", all);
 		
 		// 리다이렉트로 응답을 보냄! 302 응답!
-//		return "list";
 		return "redirect:/";
 	}
 	
