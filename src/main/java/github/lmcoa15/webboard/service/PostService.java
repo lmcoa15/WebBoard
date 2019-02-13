@@ -41,6 +41,14 @@ public class PostService {
 	}
 	
 	public void update(Post post) {
+		// 글 쓴 사람이 수정해야 함
+		
 		postDao.update(post);
+	}
+
+	public void Delete(String seq) {
+		// 
+		postDao.delete(seq);
+		
 	}
 }

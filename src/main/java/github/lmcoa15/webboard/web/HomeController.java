@@ -97,6 +97,19 @@ public class HomeController {
 		
 		return "edit";
 	}
+	
+	@RequestMapping(value="/delete", method=RequestMethod.GET)
+	public String pageDelete (HttpServletRequest req) {
+		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		
+		String value = req.getParameter("pid");
+		Integer seq = Integer.parseInt(value);
+		
+		Post p = postService.findBySeq(seq);
+		req.setAttribute("post",p);
+		
+		return "delete";
+	}
 	/*
 	 * Post 요청은 GET 요청과 다른 점이 있음
 	 * 
@@ -132,7 +145,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/doWrite", method=RequestMethod.POST)
-	public String pagedWrite (HttpServletRequest req) throws UnsupportedEncodingException {
+	public String pagedoWrite (HttpServletRequest req) throws UnsupportedEncodingException {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
 		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 
@@ -152,6 +165,25 @@ public class HomeController {
 		// /read?pid=30000
 		return "redirect:/read?pid="+post.getSeq();
 	}
+	
+	@RequestMapping(value="/doDelete", method=RequestMethod.POST)
+	public String pagedoDelete (HttpServletRequest req) throws UnsupportedEncodingException {
+		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
+
+		
+		postService.Delete(req.getParameter("seq"));
+		
+//		
+//		List<Post> all = postService.findAll();
+//		req.setAttribute("posts", all);
+		
+		// 리다이렉트로 응답을 보냄! 302 응답!
+//		return "list";
+		// /read?pid=30000
+		return "redirect:/";
+	}
+	
 //	@RequestMapping(value="/doEdit", method=RequestMethod.POST)
 	public String pagedoEdit2 (HttpServletRequest req,
 			@RequestParam Integer seq, 

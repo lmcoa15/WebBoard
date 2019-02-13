@@ -26,6 +26,7 @@
 </c:if>
 <div><a href="/example/">목록으로</a></div>
 <div><a href="/example/edit?pid=${post.seq}">글수정</a></div>
+<div><a href="/example/delete?pid=${post.seq}">글삭제</a></div>
 </body>
 </html>
 

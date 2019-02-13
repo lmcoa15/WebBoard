@@ -61,4 +61,15 @@ public class PostDao {
 		// 지금은 메모리에 있으니까 별효과 없음!
 		
 	}
+
+	public void delete(String seq) {
+		// TODO Auto-generated method stub
+		for(int i=0; i<posts.size();i++) {
+			Post p = posts.get(i);
+			if(p.getSeq().intValue() == Integer.parseInt(seq) ) {
+				posts.remove(i);
+				break;
+			}
+		}
+	}
 }
