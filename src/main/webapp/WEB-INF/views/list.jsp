@@ -26,11 +26,13 @@
 <tr>
 	<td>${p.seq}</td>
 	<td><a href="/example/read?pid=${p.seq }">${p.title}</a></td>
-	<td>0</td>
+	<td>${p.viewCount}</td>
 	<td>0</td>
 	<td>${p.creationTime}</td>
 </tr>
 </c:forEach>
 </table>
+
+<a href="/example/write"> <button> 글쓰기</button> </a>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package github.lmcoa15.webboard.web;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -70,7 +71,7 @@ public class HomeController {
 		System.out.println("post: " + post);
 		req.setAttribute("post",post);
 		
-		return "read";
+		return "read"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
 	
 	}
 	
@@ -82,6 +83,8 @@ public class HomeController {
 		
 		return "write";
 	}
+	
+	
 	@RequestMapping(value="/edit", method=RequestMethod.GET)
 	public String pageEdit (HttpServletRequest req) {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
@@ -102,17 +105,21 @@ public class HomeController {
 	 * 
 	 * 
 	 */
-	@RequestMapping(value="/doEdit_old", method=RequestMethod.POST)
-	public String pagedoEdit (HttpServletRequest req) {
+	@RequestMapping(value="/doEdit", method=RequestMethod.POST)
+	public String pagedoEdit (HttpServletRequest req) throws UnsupportedEncodingException {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 		String value = req.getParameter("seq");
 		Integer seq = Integer.parseInt(value);
 		
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
+		System.out.println(title + ", " + content);
+		
 		Post post = postService.findBySeq(seq);
 		post.setTitle(title);
 		post.setContent(content);
+		
 		postService.update(post);
 		
 //		
@@ -123,12 +130,35 @@ public class HomeController {
 //		return "list";
 		return "redirect:/";
 	}
-	@RequestMapping(value="/doEdit", method=RequestMethod.POST)
+	
+	@RequestMapping(value="/doWrite", method=RequestMethod.POST)
+	public String pagedWrite (HttpServletRequest req) throws UnsupportedEncodingException {
+		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
+
+		String title = req.getParameter("title");
+		String content = req.getParameter("content");
+		System.out.println(title + ", " + content);
+		
+		Post post = new Post(title,content); 
+		postService.Insert(post);
+		
+//		
+//		List<Post> all = postService.findAll();
+//		req.setAttribute("posts", all);
+		
+		// 리다이렉트로 응답을 보냄! 302 응답!
+//		return "list";
+		// /read?pid=30000
+		return "redirect:/read?pid="+post.getSeq();
+	}
+//	@RequestMapping(value="/doEdit", method=RequestMethod.POST)
 	public String pagedoEdit2 (HttpServletRequest req,
 			@RequestParam Integer seq, 
 			@RequestParam String title,
 			@RequestParam String content) {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		System.out.println(title + ", " + content);
 		Post post = postService.findBySeq(seq);
 		post.setTitle(title);
 		post.setContent(content);

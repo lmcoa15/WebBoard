@@ -27,10 +27,19 @@ public class PostService {
 		return posts;
 	}
 
+	// Object lock = new Object();
 	public Post findBySeq(Integer seq) {
-		return postDao.findBySeq(seq);
+		Post p = postDao.findBySeq(seq);
+		if(p!=null) {
+			p.setViewCount(p.getViewCount() + 1 ); // 1.5 이상 !!							
+		}
+		return p;
 	}
 
+	public void Insert(Post newPost) {
+		postDao.insert(newPost);
+	}
+	
 	public void update(Post post) {
 		postDao.update(post);
 	}
