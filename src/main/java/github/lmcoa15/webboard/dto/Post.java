@@ -10,22 +10,24 @@ public class Post {
 			   작성일 : 20181212 12:34:10
 	*/
 	Integer seq; // PK
+	// String user;
 	String title;
 	String content;
 	String creationTime; // java.util.Date
-	// User writer; [ id, email, joinDate]
+	User writer; // [ id, email, joinDate]
 	int viewCount; // 0
 	
 	ArrayList<Integer> num;
 	ArrayList<Double> ddd;
 	
-	public Post(Integer seq, String title, String content, String creationTime, Integer viewCount) {
+	public Post(Integer seq, String title, String content, String creationTime, Integer viewCount, User writer) {
 		super();
 		this.seq = seq;
 		this.title = title;
 		this.content = content;
 		this.creationTime = creationTime;
 		this.viewCount = viewCount;
+		this.writer = writer;
 	}
 	
 	
@@ -66,6 +68,14 @@ public class Post {
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
 	}
+	public User getWriter() {
+		return writer;
+	}
+	public void setWriter(User writer) {
+		this.writer = writer;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Post [seq=" + seq + ", title=" + title + ", content=" + content + ", creationTime=" + creationTime
