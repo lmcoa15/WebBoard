@@ -42,7 +42,11 @@ public class PostService {
 	
 	public void update(Post post) {
 		// 글 쓴 사람이 수정해야 함
-		
+		// 1) 주문디비 
+		// 2) 재고 조정
+		// 3) 결제 
+		// 4) 문자 발송
+		// 5) 포인트 적립
 		postDao.update(post);
 	}
 

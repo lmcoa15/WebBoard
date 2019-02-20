@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import github.lmcoa15.webboard.dto.Post;
+import github.lmcoa15.webboard.dto.User;
 import github.lmcoa15.webboard.service.PostService;
+import github.lmcoa15.webboard.util.Util;
 
 /**
  * Handles requests for the application home page.
@@ -30,7 +33,7 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Inject // spring 한테 호환되는 타입의 빈을 연결시켜달라!
-	PostService postService ; // = new PostService();
+	PostService postService; // = new PostService();
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -65,11 +68,23 @@ public class HomeController {
 	
 	@RequestMapping(value="/read", method=RequestMethod.GET)
 	public String pageRead2(
-			@RequestParam Integer pid, HttpServletRequest req ) {
+		@RequestParam Integer pid, HttpServletRequest req ) {
 		
 		Post post = postService.findBySeq(pid);
 		System.out.println("post: " + post);
 		req.setAttribute("post",post);
+		
+		Boolean isWriter = true;
+		HttpSession http = req.getSession();
+		User loginUser = (User)http.getAttribute("LOGIN_USER");
+		
+		User writer = post.getWriter();
+		
+		// NULL.method() NUll pointer exception
+		if(loginUser==null || !loginUser.equals(writer)) {
+			isWriter=false;
+		}
+		req.setAttribute("isWriter", isWriter);
 		
 		return "read"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
 	
@@ -84,13 +99,26 @@ public class HomeController {
 		return "write";
 	}
 	
+	@RequestMapping(value="/invalid", method=RequestMethod.GET)
+	public String pageInvalidReq() {
+		return "invalid";
+	}
 	
 	@RequestMapping(value="/edit", method=RequestMethod.GET)
 	public String pageEdit (HttpServletRequest req) {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
-		
 		String value = req.getParameter("pid");
 		Integer seq = Integer.parseInt(value);
+		
+		HttpSession http = req.getSession();
+		User loginUser = (User)http.getAttribute("LOGIN_USER");
+		Post post = postService.findBySeq(seq);
+		
+		User writer = post.getWriter();
+		// NULL.method() NUll pointer exception
+		if(loginUser==null || !loginUser.equals(writer)) {
+			return "redirect:/invalid?err=NOT_A_WRITER";
+		}
 		
 		Post p = postService.findBySeq(seq);
 		req.setAttribute("post",p);
@@ -100,13 +128,19 @@ public class HomeController {
 	
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
 	public String pageDelete (HttpServletRequest req) {
-		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
 		
+		
+		// FIXME 어떤 리소스요청들(/delete, /doDelete, ..)의 경우권한 체크하는 코드가 계속 들어감
+		// 스프링에서는 인터셉터라는 기능을 이용해서 이런 권한 확인 코드들도 한군데로 다 빼버립니다.
 		String value = req.getParameter("pid");
 		Integer seq = Integer.parseInt(value);
+		Post post = postService.findBySeq(seq);
 		
-		Post p = postService.findBySeq(seq);
-		req.setAttribute("post",p);
+		HttpSession http = req.getSession();
+		if ( !Util.isWriter(http, post) ) {
+			return "redirect:/invalid?err=NOT_A_WRITER";
+		}
+		req.setAttribute("post",post);
 		
 		return "delete";
 	}
@@ -121,6 +155,7 @@ public class HomeController {
 	@RequestMapping(value="/doEdit", method=RequestMethod.POST)
 	public String pagedoEdit (HttpServletRequest req) throws UnsupportedEncodingException {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		 
 		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 		String value = req.getParameter("seq");
 		Integer seq = Integer.parseInt(value);

@@ -16,28 +16,12 @@
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/common-nav.jsp"></c:import>
-<h3>글목록</h3>
-<hr>
-<table class="table">
-<tr>
-	<td>글번호</td>
-	<td>제목</td>
-	<td>조회수</td>
-	<td>작성자</td>
-	<td>작성일</td>
-</tr>
-
-<c:forEach var="p" items="${posts}">
-<tr>
-	<td>${p.seq}</td>
-	<td><a href="/example/read?pid=${p.seq }">${p.title}</a></td>
-	<td>${p.viewCount}</td>
-	<td>${p.writer.id}</td> <!-- p.writer : getter 메소드 -->
-	<td>${p.creationTime}</td>
-</tr>
-</c:forEach>
-</table>
-
-<a href="/example/write"> <button class="btn btn-primary"> 글쓰기</button> </a>
+<h3>레이아웃 페이지</h3>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-6">ADSFASDDD</div>
+		<div class="col-xs-6">ADSFASDDD</div>
+	</div>
+</div>
 </body>
 </html>

@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import github.lmcoa15.webboard.dto.Post;
+import github.lmcoa15.webboard.dto.User;
 /**
  * AOP - 
  * @author Moon
@@ -16,9 +17,10 @@ import github.lmcoa15.webboard.dto.Post;
  */
 @Repository
 public class PostDao {
-	Post p1 = new Post(1000, "첫번째글", "안녕하세요", "2019-01-11 12:22:11",24);
-	Post p2 = new Post(1001, "배고픔", "배교프다", "2019-01-13 12:22:11",26);
-	Post p3 = new Post(1002, "Test3", "Content3", "2019-01-21 12:22:11",66);
+	User fakeUser = new User(5000, "aaa", "aaa@naver.com", "1900-12-11", "111");
+	Post p1 = new Post(1000, "첫번째글", "안녕하세요", "2019-01-11 12:22:11",24, fakeUser);
+	Post p2 = new Post(1001, "배고픔", "배교프다", "2019-01-13 12:22:11",26, fakeUser);
+	Post p3 = new Post(1002, "Test3", "Content3", "2019-01-21 12:22:11",66, fakeUser);
 	List<Post> posts = new ArrayList<>(Arrays.asList(p1, p2, p3));
 	
 
