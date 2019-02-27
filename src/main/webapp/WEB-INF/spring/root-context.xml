@@ -3,6 +3,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
+	<!-- maven 라이브러리에 있는 클래스 혹은 직접 작성한 클래스 인스턴스 생성 및 보관 -->
+	<bean id="ds" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="org.mariadb.jdbc.Driver"></property>
+		<property name="username" value="root"></property>
+		<!-- <property name="password" value="11111"></property> -->
+		<property name="url" value="jdbc:mariadb://localhost:3306/boarddb"></property>
+	</bean>
+	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"></property>
+		<property name="mapperLocations" value="classpath:db/mappers/*.xml"></property> <!-- 쿼리가 담긴 mapper파일의 위치 -->
+	</bean>	
+	
+	<bean class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sessionFactory"></constructor-arg>
+	</bean>
 </beans>

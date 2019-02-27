@@ -17,6 +17,7 @@ public class User {
 	String birth;
 	String password;
 	
+	public User() {}
 	
 	public User(Integer seq, String id, String email, String birth, String password) {
 		super();
