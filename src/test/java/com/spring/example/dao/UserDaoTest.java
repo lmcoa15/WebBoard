@@ -19,6 +19,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import github.lmcoa15.webboard.dao.UserDao;
 import github.lmcoa15.webboard.dto.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,7 +29,10 @@ public class UserDaoTest {
 	@Inject
 	DataSource ds;
 	
-	@Inject SqlSessionTemplate session ; // 
+	@Inject SqlSessionTemplate session ; //
+	
+	@Inject UserDao userDao;
+	
 	
 	@Test
 	public void test() throws SQLException {
@@ -49,11 +53,8 @@ public class UserDaoTest {
 	
 	@Test
 	public void login() {
-		assertNotNull( session);
-		Map<String, Object> param =new HashMap<String, Object>();
-		param.put("usrId", "bb");
-		param.put("pass", "2222");
-		User bb = session.selectOne("UserMapper.login", param);
+		
+		User bb = userDao.login("bb", "2222");
 		assertEquals("bb", bb.getId());
 		assertEquals("2222", bb.getPassword());
 	}

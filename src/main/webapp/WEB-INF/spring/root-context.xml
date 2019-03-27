@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
 	<!-- maven 라이브러리에 있는 클래스 혹은 직접 작성한 클래스 인스턴스 생성 및 보관 -->
 	<bean id="ds" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
@@ -20,4 +22,7 @@
 	<bean class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sessionFactory"></constructor-arg>
 	</bean>
+	
+	<!-- <bean id="userDao" class="github.lmcoa15.webboard.dao.UserDao"></bean> -->
+	<context:component-scan base-package="github.lmcoa15.webboard.dao, github.lmcoa15.webboard.service"></context:component-scan>
 </beans>

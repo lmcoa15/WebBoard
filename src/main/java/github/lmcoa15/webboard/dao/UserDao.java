@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.sql.DataSource;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,21 +21,7 @@ import github.lmcoa15.webboard.dto.User;
 public class UserDao {
 
 	@Inject SqlSessionTemplate session ; //
-	//	 List<User> fakeUsers = new ArrayList<>();
-	/*
-	 {
-		 // TODO 2019-02-18 아래와 같이 가짜 사용자를 몇 개 등록함
-		 // fakeUsers.add(new User(....) );
-	
-		// FIXME 테스트를 위해서 가짜로 넣어둠
-	    fakeUsers.add(new User(1000, "aaa", "john@naver.com", "1999-10-01", "111"));
-	    fakeUsers.add(new User(1001, "bbb", "jane@naver.com", "2000-10-01", "111"));
-	
-	 }
-	 */
 
-	 @Inject
-	 DataSource dataSource; 
 	 
 	 public List<User> findAll() {
 		 return session.selectList("UserMapper.findAll");
@@ -73,9 +59,23 @@ public class UserDao {
 	 void close(Connection con, PreparedStatement stmt, ResultSet rs) {
 		 ;
 	}
-
+	 /**
+	  * 주어진 아이디와 비번에 대응하는 사용자가 있으면 반환함.
+	  * 그렇지 않으면 null 을 반환합니다.
+	  * @param userId
+	  * @param password
+	  * @return
+	  */
+	 // public login(var userId, var password) { ... }
+	 
 	public User login(String userId, String password) {
 		
+		HashMap<String,String> param = new HashMap<String,String>();
+		param.put("userId", userId);
+		param.put("password", password);
+		User user = session.selectOne("UserMapper.login", param);
+		return user;
+		/*
 		String query = "select * from users where userid=? and pass = ?";
 		 Connection con = null;
 		 PreparedStatement stmt = null;
@@ -105,6 +105,7 @@ public class UserDao {
 		} finally {
 			close(con, stmt, rs);
 		}
+		*/
 		 /*
 		 // TODO 2019-02-18 fakeUsers 리스트에서 주어진 id와 암호에 대응하는 사용자를 찾아서 반환함 없으면 null 리턴함
 		 for(int i=0;i<fakeUsers.size();i++) {
