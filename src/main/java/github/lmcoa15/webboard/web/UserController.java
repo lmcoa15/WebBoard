@@ -66,5 +66,10 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public String pageMain(HttpServletRequest req ) {
+		return "main"; 
+	}
+	
 }
 

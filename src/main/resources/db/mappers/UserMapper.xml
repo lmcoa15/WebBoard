@@ -12,10 +12,8 @@
 	</select>
 	
 	<select id="login" parameterType="map" resultType="github.lmcoa15.webboard.dto.User">
-		select 
-		  userId AS id,
-		  pass AS password
+		select *
 		from users
-		where userid=#{userId} and pass=#{password}
+		where id=#{userId} and password=#{password}
 	</select>
 </mapper>

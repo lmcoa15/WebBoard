@@ -13,6 +13,11 @@ public class UserService {
 	 UserDao userDao;
 
 	 public User login(String userId, String password) {
-		 return userDao.login(userId, password);
+		 User user=new User();
+		 user.setId(userId);
+		 user.setPassword(password);
+		 return user;
+		 
+		 //return userDao.login(userId, password);
 	 }
 }
