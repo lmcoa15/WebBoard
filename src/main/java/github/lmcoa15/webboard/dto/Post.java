@@ -10,77 +10,100 @@ public class Post {
 			   작성일 : 20181212 12:34:10
 	*/
 	Integer seq; // PK
-	// String user;
 	String title;
-	String content;
-	String creationTime; // java.util.Date
-	User writer; // [ id, email, joinDate]
-	int viewCount; // 0
+	String contents;
+	String date; 
+	Integer writer; 
+	Integer viewCount; // 0
+	Integer category;
 	
-	ArrayList<Integer> num;
-	ArrayList<Double> ddd;
 	
-	public Post(Integer seq, String title, String content, String creationTime, Integer viewCount, User writer) {
+	public Post(Integer seq, String title, String contents, String date, Integer writer, Integer viewCount, Integer category) {
 		super();
 		this.seq = seq;
 		this.title = title;
-		this.content = content;
-		this.creationTime = creationTime;
-		this.viewCount = viewCount;
+		this.contents = contents;
+		this.date = date;
 		this.writer = writer;
+		this.viewCount = viewCount;
+		this.category = category;
 	}
-	
-	
-	public Post(String title, String content) {
-		// TODO Auto-generated constructor stub
+
+	public Post(String title, String contents) {
+		super();
 		this.title = title;
-		this.content = content;
+		this.contents = contents;
 	}
-
-
+	
 	public Integer getSeq() {
 		return seq;
 	}
+
+
 	public void setSeq(Integer seq) {
 		this.seq = seq;
 	}
+
+
 	public String getTitle() {
 		return title;
 	}
+
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getContent() {
-		return content;
+
+
+	public String getContents() {
+		return contents;
 	}
-	public void setContent(String content) {
-		this.content = content;
+
+
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
-	public String getCreationTime() {
-		return creationTime;
+
+
+	public String getDate() {
+		return date;
 	}
-	public void setCreationTime(String creationTime) {
-		this.creationTime = creationTime;
+
+
+	public void setDate(String date) {
+		this.date = date;
 	}
-	public int getViewCount() {
-		return viewCount;
-	}
-	public void setViewCount(int viewCount) {
-		this.viewCount = viewCount;
-	}
-	public User getWriter() {
+
+
+	public Integer getWriter() {
 		return writer;
 	}
-	public void setWriter(User writer) {
+
+
+	public void setWriter(Integer writer) {
 		this.writer = writer;
 	}
 
 
-	@Override
-	public String toString() {
-		return "Post [seq=" + seq + ", title=" + title + ", content=" + content + ", creationTime=" + creationTime
-				+ "]";
+	public Integer getViewCount() {
+		return viewCount;
 	}
+
+
+	public void setViewCount(Integer viewCount) {
+		this.viewCount = viewCount;
+	}
+
+
+	public Integer getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(Integer category) {
+		this.category = category;
+	}
+	
 	
 }
 

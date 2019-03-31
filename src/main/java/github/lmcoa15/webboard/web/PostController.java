@@ -2,6 +2,7 @@ package github.lmcoa15.webboard.web;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +29,9 @@ import github.lmcoa15.webboard.util.Util;
  * Handles requests for the application home page.
  */
 @Controller
-public class HomeController {
+public class PostController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 	
 	@Inject // spring 한테 호환되는 타입의 빈을 연결시켜달라!
 	PostService postService; // = new PostService();
@@ -78,12 +79,13 @@ public class HomeController {
 		HttpSession http = req.getSession();
 		User loginUser = (User)http.getAttribute("LOGIN_USER");
 		
-		User writer = post.getWriter();
+		//User db 접근해서 가져온다
+		//User writer = post.getWriter();
 		
 		// NULL.method() NUll pointer exception
-		if(loginUser==null || !loginUser.equals(writer)) {
-			isWriter=false;
-		}
+//		if(loginUser==null || !loginUser.equals(writer)) {
+//			isWriter=false;
+//		}
 		req.setAttribute("isWriter", isWriter);
 		
 		return "read"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
@@ -114,11 +116,13 @@ public class HomeController {
 		User loginUser = (User)http.getAttribute("LOGIN_USER");
 		Post post = postService.findBySeq(seq);
 		
-		User writer = post.getWriter();
+		//DB접근으로 수정
+		//User writer = post.getWriter();
+		
 		// NULL.method() NUll pointer exception
-		if(loginUser==null || !loginUser.equals(writer)) {
-			return "redirect:/invalid?err=NOT_A_WRITER";
-		}
+//		if(loginUser==null || !loginUser.equals(writer)) {
+//			return "redirect:/invalid?err=NOT_A_WRITER";
+//		}
 		
 		Post p = postService.findBySeq(seq);
 		req.setAttribute("post",p);
@@ -166,7 +170,7 @@ public class HomeController {
 		
 		Post post = postService.findBySeq(seq);
 		post.setTitle(title);
-		post.setContent(content);
+		post.setContents(content);
 		
 		postService.update(post);
 		
@@ -184,11 +188,16 @@ public class HomeController {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
 		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+
+
+		//출처: https://includestdio.tistory.com/4 [includestdio]
 		String title = req.getParameter("title");
-		String content = req.getParameter("content");
-		System.out.println(title + ", " + content);
+		String contents = req.getParameter("contents");
 		
-		Post post = new Post(title,content); 
+		Post post = new Post(title,contents); 
 		postService.Insert(post);
 		
 //		
@@ -207,7 +216,7 @@ public class HomeController {
 		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 
 		
-		postService.Delete(req.getParameter("seq"));
+		postService.Delete(Integer.parseInt(req.getParameter("seq")));
 		
 //		
 //		List<Post> all = postService.findAll();
@@ -228,7 +237,7 @@ public class HomeController {
 		System.out.println(title + ", " + content);
 		Post post = postService.findBySeq(seq);
 		post.setTitle(title);
-		post.setContent(content);
+		post.setContents(content);
 		postService.update(post);
 		
 //		

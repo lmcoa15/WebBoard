@@ -13,12 +13,12 @@ public class Util {
 	public static boolean isWriter(HttpSession session, Post post) {
 		
 		User loginUser = (User)session.getAttribute("LOGIN_USER");
-		User writer = post.getWriter();
-		
-		// NULL.method() NUll pointer exception
-		if(loginUser==null || !loginUser.equals(writer)) {
-			return false;
-		}
+//		User writer = post.getWriter();
+//		
+//		// NULL.method() NUll pointer exception
+//		if(loginUser==null || !loginUser.equals(writer)) {
+//			return false;
+//		}
 		
 		return true;	
 	}

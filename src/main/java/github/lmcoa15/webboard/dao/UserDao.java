@@ -73,8 +73,6 @@ public class UserDao {
 		HashMap<String,String> param = new HashMap<String,String>();
 		param.put("userId", userId);
 		param.put("password", password);
-		System.out.println("도착");
-		System.out.println(param);
 
 		User user = session.selectOne("UserMapper.login", param);
 		return user;

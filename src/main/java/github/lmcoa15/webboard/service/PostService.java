@@ -50,7 +50,7 @@ public class PostService {
 		postDao.update(post);
 	}
 
-	public void Delete(String seq) {
+	public void Delete(Integer seq) {
 		// 
 		postDao.delete(seq);
 		

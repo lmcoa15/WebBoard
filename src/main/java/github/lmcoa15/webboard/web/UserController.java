@@ -50,6 +50,9 @@ public class UserController {
 		String userId = req.getParameter("ID");
 		String password = req.getParameter("Password");
 		User loginUser = userService.login(userId,password);
+		
+		System.out.println("login결과");
+		System.out.println(loginUser);
 
 		if(loginUser==null) System.out.println("로그인 실패");
 		else {

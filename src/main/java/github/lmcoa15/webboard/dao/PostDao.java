@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import github.lmcoa15.webboard.dto.Post;
@@ -18,38 +21,39 @@ import github.lmcoa15.webboard.dto.User;
 @Repository
 public class PostDao {
 	User fakeUser = new User(5000, "aaa", "aaa@naver.com", "1900-12-11", "111");
-	Post p1 = new Post(1000, "첫번째글", "안녕하세요", "2019-01-11 12:22:11",24, fakeUser);
-	Post p2 = new Post(1001, "배고픔", "배교프다", "2019-01-13 12:22:11",26, fakeUser);
-	Post p3 = new Post(1002, "Test3", "Content3", "2019-01-21 12:22:11",66, fakeUser);
-	List<Post> posts = new ArrayList<Post>(Arrays.asList(p1, p2, p3));
+//	Post p1 = new Post(1000, "첫번째글", "안녕하세요", "2019-01-11 12:22:11","writer1",24, 1);
+//	Post p2 = new Post(1001, "배고픔", "배교프다", "2019-01-13 12:22:11","writer2",26, 2);
+//	Post p3 = new Post(1002, "Test3", "Content3", "2019-01-21 12:22:11",66, fakeUser);
+//	List<Post> posts = new ArrayList<Post>(Arrays.asList(p1, p2, p3));
 	
+	@Inject SqlSessionTemplate session ;
 
 	public List<Post> findAll() {
-		// FIXME 지금은 디비가 없으니까 가짜로 아무거나 리턴합니다.
+
+		List<Post> posts = session.selectList("PostMapper.findAll");
 		return posts;
 	}
 
 	public Post findBySeq(Integer seq) {
 		// 이쪽 코드는 원래 디비에서 조회하는 코드로 대체되어야 함
-		for(int i= 0 ; i < posts.size();i++) {
-			Post p = posts.get(i);
-			// FIXME 이거 나중에 오류낭ㄹ 수 잇음! 128개 이상이면!!
-			// 참조 변수는 == 으로 비교하면 안됨!
-			if(p.getSeq().equals(seq)) {
-				return p;
-			}
-		}
 		
-		return null;
+		Post post = session.selectOne("PostMapper.find", seq);
+		if(post==null)
+			return null;
+		
+		return post;
+
 	}
 
 	static int seq = 30000;
 	public void insert(Post post) {
 		// seq 를 가짜로 만들어줌
 		// 지금 등록 시간도 가짜로 넣어줌
-		post.setSeq(seq++);
-		post.setCreationTime(curTime());
-		posts.add(post);
+		
+//		post.setSeq(seq++);
+//		post.setCreationTime(curTime());
+//		posts.add(post);
+		session.insert("PostMapper.write", post);
 	}
 	
 	String curTime() {
@@ -64,14 +68,8 @@ public class PostDao {
 		
 	}
 
-	public void delete(String seq) {
+	public void delete(Integer seq) {
 		// TODO Auto-generated method stub
-		for(int i=0; i<posts.size();i++) {
-			Post p = posts.get(i);
-			if(p.getSeq().intValue() == Integer.parseInt(seq) ) {
-				posts.remove(i);
-				break;
-			}
-		}
+		session.delete("PostMapper.delete",seq);
 	}
 }
