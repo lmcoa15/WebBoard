@@ -17,6 +17,8 @@ public class Post {
 	Integer viewCount; // 0
 	Integer category;
 	
+	//기본 생성자
+	public Post() {}
 	
 	public Post(Integer seq, String title, String contents, String date, Integer writer, Integer viewCount, Integer category) {
 		super();

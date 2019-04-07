@@ -12,17 +12,17 @@ package github.lmcoa15.webboard.dto;
 public class User {
 	
 	Integer seq;
-	String id;
+	String userId;
 	String password;
 	String email;
 	String joinDate;
 	
 	public User() {}
 	
-	public User(Integer seq, String id, String password, String email, String joinDate) {
+	public User(Integer seq, String userId, String password, String email, String joinDate) {
 		super();
 		this.seq = seq;
-		this.id = id;
+		this.userId = userId;
 		this.password = password;
 		this.email = email;
 		this.joinDate = joinDate;
@@ -38,12 +38,12 @@ public class User {
 		this.seq = seq;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getPassword() {
@@ -74,7 +74,7 @@ public class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -87,10 +87,10 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}

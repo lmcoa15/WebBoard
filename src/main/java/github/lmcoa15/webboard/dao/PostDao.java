@@ -35,7 +35,6 @@ public class PostDao {
 	}
 
 	public Post findBySeq(Integer seq) {
-		// 이쪽 코드는 원래 디비에서 조회하는 코드로 대체되어야 함
 		
 		Post post = session.selectOne("PostMapper.find", seq);
 		if(post==null)
@@ -49,10 +48,7 @@ public class PostDao {
 	public void insert(Post post) {
 		// seq 를 가짜로 만들어줌
 		// 지금 등록 시간도 가짜로 넣어줌
-		
-//		post.setSeq(seq++);
-//		post.setCreationTime(curTime());
-//		posts.add(post);
+
 		session.insert("PostMapper.write", post);
 	}
 	
@@ -63,8 +59,8 @@ public class PostDao {
 	}
 	
 	public void update(Post post) {
-		// 실제로는 업데이트 쿼리를 실행함
-		// 지금은 메모리에 있으니까 별효과 없음!
+
+		session.update("PostMapper.update", post);
 		
 	}
 

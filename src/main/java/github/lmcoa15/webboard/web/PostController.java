@@ -79,13 +79,6 @@ public class PostController {
 		HttpSession http = req.getSession();
 		User loginUser = (User)http.getAttribute("LOGIN_USER");
 		
-		//User db 접근해서 가져온다
-		//User writer = post.getWriter();
-		
-		// NULL.method() NUll pointer exception
-//		if(loginUser==null || !loginUser.equals(writer)) {
-//			isWriter=false;
-//		}
 		req.setAttribute("isWriter", isWriter);
 		
 		return "read"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
@@ -109,6 +102,7 @@ public class PostController {
 	@RequestMapping(value="/edit", method=RequestMethod.GET)
 	public String pageEdit (HttpServletRequest req) {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		
 		String value = req.getParameter("pid");
 		Integer seq = Integer.parseInt(value);
 		

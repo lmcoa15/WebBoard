@@ -32,8 +32,8 @@
 	<td>${p.seq}</td>
 	<td><a href="/example/read?pid=${p.seq }">${p.title}</a></td>
 	<td>${p.viewCount}</td>
-	<td>${p.writer.id}</td> <!-- p.writer : getter 메소드 -->
-	<td>${p.creationTime}</td>
+	<td>${p.writer}</td> <!-- p.writer : getter 메소드 -->
+	<td>${p.date}</td>
 </tr>
 </c:forEach>
 </table>

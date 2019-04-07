@@ -46,7 +46,7 @@ public class UserDaoTest {
 		assertNotNull( session);
 		List<User> users = session.selectList("UserMapper.findAll");
 		assertEquals(2, users.size());
-		assertEquals("aaa", users.get(0).getId());
+		assertEquals("aaa", users.get(0).getUserId());
 		assertEquals("aaa@naver.com", users.get(0).getEmail());
 		assertEquals("111", users.get(0).getPassword());
 	}
@@ -55,7 +55,7 @@ public class UserDaoTest {
 	public void login() {
 		
 		User bb = userDao.login("bb", "2222");
-		assertEquals("bb", bb.getId());
+		assertEquals("bb", bb.getUserId());
 		assertEquals("2222", bb.getPassword());
 	}
 
