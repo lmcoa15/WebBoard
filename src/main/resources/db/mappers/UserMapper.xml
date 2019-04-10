@@ -5,7 +5,7 @@
 <mapper namespace="UserMapper">
 	<select id="findAll" resultType="github.lmcoa15.webboard.dto.User">
 		select 
-		  userId AS id,
+		  user_id AS id,
 		  email As email,
 		  pass AS password
 		from user;
@@ -14,6 +14,6 @@
 	<select id="login" parameterType="map" resultType="github.lmcoa15.webboard.dto.User">
 		select *
 		from user
-		where userId=#{userId} and password=#{password};
+		where user_id=#{userId} and password=#{password};
 	</select>
 </mapper>

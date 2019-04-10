@@ -6,13 +6,13 @@
 	<select id="findAll" resultType="github.lmcoa15.webboard.dto.Post">
 		select 
 		  *
-		from post;
+		from POST;
 	</select>
 	
 	<select id="find" parameterType="int" resultType="github.lmcoa15.webboard.dto.Post">
 		select 
 		  *
-		from post
+		from POST
 		where seq = #{seq}
 	</select>
 
