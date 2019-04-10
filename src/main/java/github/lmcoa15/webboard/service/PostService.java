@@ -55,4 +55,10 @@ public class PostService {
 		postDao.delete(seq);
 		
 	}
+
+	public List<Post> findPostsByAlias(String value) {
+		// TODO Auto-generated method stub
+		
+		return postDao.findPostsByAlias(value);
+	}
 }

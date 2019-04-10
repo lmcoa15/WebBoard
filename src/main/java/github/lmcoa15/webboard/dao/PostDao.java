@@ -68,4 +68,11 @@ public class PostDao {
 		// TODO Auto-generated method stub
 		session.delete("PostMapper.delete",seq);
 	}
+
+	public List<Post> findPostsByAlias(String value) {
+		// TODO Auto-generated method stub
+		
+		List<Post> posts = session.selectList("PostMapper.findPostsByAlias",value);
+		return posts;
+	}
 }

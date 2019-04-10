@@ -1,16 +1,23 @@
 package github.lmcoa15.webboard.web;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import github.lmcoa15.webboard.dto.Category;
 import github.lmcoa15.webboard.dto.User;
+import github.lmcoa15.webboard.service.CategoryService;
 import github.lmcoa15.webboard.service.UserService;
 /**
  *  사용자 가입, /doJoin 
@@ -30,7 +37,7 @@ public class UserController {
 	 * */
 	@Inject // spring 한테 호환되는 타입의 빈을 연결시켜달라!
 	UserService userService; // = new UserService();
-	// 
+
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String pageLogin(HttpServletRequest req ) {
@@ -69,10 +76,6 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(value="/main", method=RequestMethod.GET)
-	public String pageMain(HttpServletRequest req ) {
-		return "main"; 
-	}
-	
 }
+
 

@@ -16,6 +16,13 @@
 		where seq = #{seq}
 	</select>
 
+	<select id="findPostsByAlias" parameterType="String" resultType="github.lmcoa15.webboard.dto.Post">
+		select 
+			p.*
+		from category c
+		join post p ON c.seq = p.category
+		where c.alias = #{id}
+	</select>
 	
 	<insert id="write" parameterType="map">
 	<!--  

@@ -56,7 +56,26 @@
           
           <div class="row">
           	<!--  content here -->
-          	OK
+          <table class="table">
+			<tr>
+				<td>글번호</td>
+				<td>제목</td>
+				<td>조회수</td>
+				<td>작성자</td>
+				<td>작성일</td>
+			</tr>
+			
+			<c:forEach var="p" items="${posts}">
+			<tr>
+				<td>${p.seq}</td>
+				<td><a href="/example/read?pid=${p.seq }">${p.title}</a></td>
+				<td>${p.viewCount}</td>
+				<td>${p.writer}</td> <!-- p.writer : getter 메소드 -->
+				<td>${p.date}</td>
+			</tr>
+			</c:forEach>
+		</table>
+           
           </div>
         </div>
         <!-- /.container-fluid -->

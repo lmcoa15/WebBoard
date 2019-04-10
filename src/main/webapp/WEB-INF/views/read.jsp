@@ -12,7 +12,7 @@
 <c:import url="/WEB-INF/views/common/common-nav.jsp"></c:import>
 <c:if test="${ not empty post }">
 <h3>${ post.title}</h3>
-<p>${ post.content }</p>
+<p>${ post.contents }</p>
 </c:if>
 <c:if test="${empty post }">
 <h3> 글이 존재하지 않습니다.</h3>

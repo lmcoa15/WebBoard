@@ -16,12 +16,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import github.lmcoa15.webboard.dto.Category;
 import github.lmcoa15.webboard.dto.Post;
 import github.lmcoa15.webboard.dto.User;
+import github.lmcoa15.webboard.service.CategoryService;
 import github.lmcoa15.webboard.service.PostService;
 import github.lmcoa15.webboard.util.Util;
 
@@ -35,6 +38,9 @@ public class PostController {
 	
 	@Inject // spring 한테 호환되는 타입의 빈을 연결시켜달라!
 	PostService postService; // = new PostService();
+	
+	@Inject
+	CategoryService categoryService; // = new cateService();
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -240,6 +246,38 @@ public class PostController {
 		
 		// 리다이렉트로 응답을 보냄! 302 응답!
 		return "redirect:/";
+	}
+	
+	
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public String pageMain(HttpServletRequest req, Model model) {
+
+		List<Category> categoryList = categoryService.findAll();
+		model.addAttribute("category", categoryList);
+		
+		return "main"; 
+	}
+	/*
+	 *requestMapping에 있는 {}안에 있는 변수에(value)에 값 넣어준다.
+	 *@PathVariable에 있는 value변수는 위에 requestMappin에 있는 변수와 이름을 맞춰줘야 한다.
+	 *   /example/yes
+	 *   /example/good
+	 *   /example/hello
+	 *   만약 login이 이미 @RequestMapping 되어 있으면 login으로 가고 남는것들 여기로 온다.
+	 * */
+	@RequestMapping(value="/{value}") 
+	public String pageCategory(@PathVariable String value, Model model) { 
+		
+		//게시글 위한 post정보 다시 가져온다.
+		List<Post> posts = postService.findPostsByAlias(value);
+		model.addAttribute("posts",posts);
+		
+		
+		//left-side를 위해 카테고리 정보 다시 가지고 와야한다.
+		List<Category> categoryList = categoryService.findAll();
+		model.addAttribute("category", categoryList);
+		
+		return "pagePost";
 	}
 	
 }
