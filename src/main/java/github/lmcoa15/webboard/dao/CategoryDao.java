@@ -20,5 +20,12 @@ public class CategoryDao {
 		return session.selectList("CategoryMapper.findAll");
 		
 	}
+	
+	//category 타이들
+	public Category findCategoryByAlias(String value) {
+
+		return session.selectOne("CategoryMapper.findCategoryByAlias",value);
+		
+	}
 
 }

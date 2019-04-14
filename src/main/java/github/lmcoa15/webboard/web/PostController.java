@@ -253,13 +253,13 @@ public class PostController {
 	public String pageMain(HttpServletRequest req, Model model) {
 
 		List<Category> categoryList = categoryService.findAll();
-		model.addAttribute("category", categoryList);
+		model.addAttribute("categoryList", categoryList);
 		
 		return "main"; 
 	}
 	/*
 	 *requestMapping에 있는 {}안에 있는 변수에(value)에 값 넣어준다.
-	 *@PathVariable에 있는 value변수는 위에 requestMappin에 있는 변수와 이름을 맞춰줘야 한다.
+	 *@PathVariable에 있는 value변수는 위에 requestMapping에 있는 변수와 이름을 맞춰줘야 한다.
 	 *   /example/yes
 	 *   /example/good
 	 *   /example/hello
@@ -275,8 +275,13 @@ public class PostController {
 		
 		//left-side를 위해 카테고리 정보 다시 가지고 와야한다.
 		List<Category> categoryList = categoryService.findAll();
-		model.addAttribute("category", categoryList);
+		model.addAttribute("categoryList", categoryList);
 		
+		//왼쪽 카테고리 선택했을 때 타이틀 값 저장
+		Category category = categoryService.findCategoryByAlias(value);
+		model.addAttribute("category", category);
+
+		System.out.println("category :"+ category.getCateName());
 		return "pagePost";
 	}
 	

@@ -20,4 +20,10 @@ public class CategoryService {
 		// return category;
 		return categoryDao.findAll();
 	}
+	
+	public Category findCategoryByAlias(String value){
+
+		return categoryDao.findCategoryByAlias(value);
+	}
+	
 }

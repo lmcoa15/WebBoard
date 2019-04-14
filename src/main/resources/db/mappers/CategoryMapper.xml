@@ -11,4 +11,10 @@
 		from CATEGORY;
 	</select>
 
+	<select id="findCategoryByAlias" parameterType="String" resultType="github.lmcoa15.webboard.dto.Category">
+		select 
+		  *
+		from CATEGORY
+		where alias=#{value};
+	</select>
 </mapper>

@@ -28,7 +28,7 @@
         </a>
       </li>
       <!-- Nav Item - Pages Collapse Menu -->
-      <c:forEach var="cate" items="${category}">
+      <c:forEach var="cate" items="${categoryList}">
       <li class="nav-item">
         <a class="nav-link collapsed" href="${pageContext.request.contextPath}/${cate.alias}" aria-expanded="true">
           <i class="fas fa-fw fa-cog"></i>
