@@ -32,11 +32,11 @@
 	</insert>
 	
 	<update id="update" parameterType="map">
-		<!-- 
+	
 		update post
-		set title=#{title}, contents=#{contents}, date=sysdate
+		set title=#{title}, contents=#{contents}
 		where seq=#{seq} 
-		-->
+		
 	</update>
 	
 	<delete id="delete" parameterType="int">

@@ -59,29 +59,17 @@
           </div>
           <!--  End of Pgae Heading -->
           
-          <div class="row">
-          	<!--  content here -->
-          <table class="table">
-			<tr>
-				<td>글번호</td>
-				<td>제목</td>
-				<td>조회수</td>
-				<td>작성자</td>
-				<td>작성일</td>
-			</tr>
-			
-			<c:forEach var="p" items="${posts}">
-			<tr>
-				<td>${p.seq}</td>
-				<td><a href="/example/pageRead?pid=${p.seq }">${p.title}</a></td>
-				<td>${p.viewCount}</td>
-				<td>${p.writer}</td> <!-- p.writer : getter 메소드 -->
-				<td>${p.date}</td>
-			</tr>
-			</c:forEach>
-		</table>
-           
-          </div>
+          <div class="container-fluid">
+			<div class="row">
+				<form action="/example/doEdit" method="post">
+					<input type="hidden" value="${post.seq}" name="seq">
+					<input type="text" value="${post.title}" name="title">
+					<br>
+					<textarea rows="5" cols="40" name="contents">${post.contents}</textarea>
+					<input type="submit" value="수정">
+				</form>
+			</div>
+		</div>
         </div>
         <!-- /.container-fluid -->
 
@@ -144,4 +132,3 @@
 </body>
 
 </html>
-    

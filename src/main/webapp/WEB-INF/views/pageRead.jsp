@@ -59,29 +59,25 @@
           </div>
           <!--  End of Pgae Heading -->
           
-          <div class="row">
-          	<!--  content here -->
-          <table class="table">
-			<tr>
-				<td>글번호</td>
-				<td>제목</td>
-				<td>조회수</td>
-				<td>작성자</td>
-				<td>작성일</td>
-			</tr>
-			
-			<c:forEach var="p" items="${posts}">
-			<tr>
-				<td>${p.seq}</td>
-				<td><a href="/example/pageRead?pid=${p.seq }">${p.title}</a></td>
-				<td>${p.viewCount}</td>
-				<td>${p.writer}</td> <!-- p.writer : getter 메소드 -->
-				<td>${p.date}</td>
-			</tr>
-			</c:forEach>
-		</table>
-           
-          </div>
+          <div class="container-fluid">
+			<div class="row">
+		
+				<c:if test="${isWriter}"> <!--  req.getAttribute("isWriter"); -->
+					<form>
+						<input type="text" value="${post.title}" name="title" readonly="readonly" disabled>
+						<br>
+						<textarea rows="5" cols="40" name="contents" readonly="readonly" disabled>${post.contents}</textarea>
+					</form>
+				</c:if> 
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/main">목록으로</a></div>
+				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/pageEdit?pid=${post.seq}">글수정</a></div>
+				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/delete?pid=${post.seq}">글삭제</a></div>
+				
+				
+			</div>
+		</div>
         </div>
         <!-- /.container-fluid -->
 

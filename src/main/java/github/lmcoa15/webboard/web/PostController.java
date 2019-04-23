@@ -48,16 +48,10 @@ public class PostController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String pageList(HttpServletRequest req, Locale locale, Model model) {
 		
-		List<Post> allPost = postService.findAll();
-		req.setAttribute("posts", allPost);
+		List<Category> categoryList = categoryService.findAll();
+		model.addAttribute("categoryList", categoryList);
 		
-		model.addAttribute("posts", allPost);
-		/*
-		 * { posts: [p1, p2, p3] }
-		 */
-		
-		// /WEB-INF/views/home.jsp
-		return "list";
+		return "main";
 	}
 	
 	@RequestMapping(value="/read_old", method=RequestMethod.GET)
@@ -73,24 +67,6 @@ public class PostController {
 	
 	}
 	
-	@RequestMapping(value="/read", method=RequestMethod.GET)
-	public String pageRead2(
-		@RequestParam Integer pid, HttpServletRequest req ) {
-		
-		Post post = postService.findBySeq(pid);
-		System.out.println("post: " + post);
-		req.setAttribute("post",post);
-		
-		Boolean isWriter = true;
-		HttpSession http = req.getSession();
-		User loginUser = (User)http.getAttribute("LOGIN_USER");
-		
-		req.setAttribute("isWriter", isWriter);
-		
-		return "read"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
-	
-	}
-	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public String pageWrite (HttpServletRequest req) {
 		// FIXME 로그인 한 사람만 이 페이지를 봐야 합니다.
@@ -103,31 +79,6 @@ public class PostController {
 	@RequestMapping(value="/invalid", method=RequestMethod.GET)
 	public String pageInvalidReq() {
 		return "invalid";
-	}
-	
-	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public String pageEdit (HttpServletRequest req) {
-		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
-		
-		String value = req.getParameter("pid");
-		Integer seq = Integer.parseInt(value);
-		
-		HttpSession http = req.getSession();
-		User loginUser = (User)http.getAttribute("LOGIN_USER");
-		Post post = postService.findBySeq(seq);
-		
-		//DB접근으로 수정
-		//User writer = post.getWriter();
-		
-		// NULL.method() NUll pointer exception
-//		if(loginUser==null || !loginUser.equals(writer)) {
-//			return "redirect:/invalid?err=NOT_A_WRITER";
-//		}
-		
-		Post p = postService.findBySeq(seq);
-		req.setAttribute("post",p);
-		
-		return "edit";
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
@@ -165,7 +116,7 @@ public class PostController {
 		Integer seq = Integer.parseInt(value);
 		
 		String title = req.getParameter("title");
-		String content = req.getParameter("content");
+		String content = req.getParameter("contents");
 		System.out.println(title + ", " + content);
 		
 		Post post = postService.findBySeq(seq);
@@ -248,6 +199,23 @@ public class PostController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value="/pageRead", method=RequestMethod.GET)
+	public String pageRead2(
+		@RequestParam Integer pid, HttpServletRequest req ) {
+		
+		Post post = postService.findBySeq(pid);
+		System.out.println("post: " + post);
+		req.setAttribute("post",post);
+		
+		Boolean isWriter = true;
+		HttpSession http = req.getSession();
+		User loginUser = (User)http.getAttribute("LOGIN_USER");
+		
+		req.setAttribute("isWriter", isWriter);
+		
+		return "pageRead"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
+	
+	}
 	
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String pageMain(HttpServletRequest req, Model model) {
@@ -257,6 +225,32 @@ public class PostController {
 		
 		return "main"; 
 	}
+	
+	@RequestMapping(value="/pageEdit", method=RequestMethod.GET)
+	public String pageEdit (HttpServletRequest req) {
+		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		
+		String value = req.getParameter("pid");
+		Integer seq = Integer.parseInt(value);
+		
+		HttpSession http = req.getSession();
+		User loginUser = (User)http.getAttribute("LOGIN_USER");
+		Post post = postService.findBySeq(seq);
+		
+		//DB접근으로 수정
+		//User writer = post.getWriter();
+		
+		// NULL.method() NUll pointer exception
+//		if(loginUser==null || !loginUser.equals(writer)) {
+//			return "redirect:/invalid?err=NOT_A_WRITER";
+//		}
+		
+		Post p = postService.findBySeq(seq);
+		req.setAttribute("post",p);
+		
+		return "pageEdit";
+	}
+	
 	/*
 	 *requestMapping에 있는 {}안에 있는 변수에(value)에 값 넣어준다.
 	 *@PathVariable에 있는 value변수는 위에 requestMapping에 있는 변수와 이름을 맞춰줘야 한다.

@@ -19,4 +19,4 @@
 	<input type="submit" value="수정">
 </form>
 </body>
-</html>
+</html>    
