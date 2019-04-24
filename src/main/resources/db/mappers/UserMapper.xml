@@ -3,6 +3,15 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="UserMapper">
+
+	<resultMap id="userMap" type="github.lmcoa15.webboard.dto.User">
+		<id property="seq" column="useq"/>
+		<result property="userId" column="user_id"/>
+		<result property="password" column="password"/>
+		<result property="email" column="email"/>
+		<result property="joinDate" column="joinDate"/>
+	</resultMap>
+	
 	<select id="findAll" resultType="github.lmcoa15.webboard.dto.User">
 		select 
 		  user_id AS id,

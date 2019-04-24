@@ -2,25 +2,59 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
 <mapper namespace="PostMapper">
-	<select id="findAll" resultType="github.lmcoa15.webboard.dto.Post">
-		select 
-		  *
-		from POST;
-	</select>
 	
-	<select id="find" parameterType="int" resultType="github.lmcoa15.webboard.dto.Post">
+	<resultMap type="github.lmcoa15.webboard.dto.Post" id="postMap">
+		<id property="seq" column="seq"/>
+		<result property="title" column="title"/>
+		<result property="contents" column="contents"/>
+		<result property="date" column="date"/>
+		<result property="viewCount" column="viewCount"/>
+		
+		<association property="writer" resultMap="UserMapper.userMap"></association>
+		<association property="category" resultMap="CategoryMapper.cateMap"></association>
+		<!-- <association property="category" javaType="github.lmcoa15.webboard.dto.Category">
+			<result property="seq" column="category"/>
+			<result property="cateName" column="cateName"/>
+			<result property="alias" column="alias"/>
+		</association> -->
+	</resultMap>
+	 
+	<select id="findAll" resultMap="postMap">
 		select 
-		  *
-		from POST
-		where seq = #{seq}
+			p.*,
+			u.seq as useq,
+			u.*,
+			c.alias,
+			c.cateName
+		from POST p, Category c, User u
+		where p.category = c.seq and p.writer =u.seq
+	</select>
+	<!-- resultType="github.lmcoa15.webboard.dto.Post" -->
+	
+	<select id="find" parameterType="int" resultMap="postMap">
+		select 
+			p.*,
+			u.seq as useq,
+			u.*,
+			c.alias,
+			c.cateName
+		from POST p, Category c, User u
+		where p.category = c.seq and p.seq = #{seq} and p.writer =u.seq
 	</select>
 
-	<select id="findPostsByAlias" parameterType="String" resultType="github.lmcoa15.webboard.dto.Post">
+	<select id="findPostsByAlias" parameterType="String" resultMap="postMap">
+		
 		select 
-			p.*
+			p.*,
+			u.seq as useq,
+			u.*,
+			c.alias,
+			c.cateName
 		from category c
 		join post p ON c.seq = p.category
+		join user u ON p.writer = u.seq
 		where c.alias = #{id}
 	</select>
 	
@@ -31,6 +65,13 @@
 		-->
 	</insert>
 	
+	<update id="increaseViewCount" parameterType="Integer">
+	
+		update post
+		set viewCount = viewCount+1
+		where seq = #{seq}
+		
+	</update>
 	<update id="update" parameterType="map">
 	
 		update post

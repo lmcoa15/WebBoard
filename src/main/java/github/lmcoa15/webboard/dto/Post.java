@@ -13,14 +13,14 @@ public class Post {
 	String title;
 	String contents;
 	String date; 
-	Integer writer; 
+	User writer; 
 	Integer viewCount; // 0
-	Integer category;
+	Category category; // Category;
 	
 	//기본 생성자
 	public Post() {}
 	
-	public Post(Integer seq, String title, String contents, String date, Integer writer, Integer viewCount, Integer category) {
+	public Post(Integer seq, String title, String contents, String date, User writer, Integer viewCount, Category category) {
 		super();
 		this.seq = seq;
 		this.title = title;
@@ -77,12 +77,12 @@ public class Post {
 	}
 
 
-	public Integer getWriter() {
+	public User getWriter() {
 		return writer;
 	}
 
 
-	public void setWriter(Integer writer) {
+	public void setWriter(User writer) {
 		this.writer = writer;
 	}
 
@@ -97,13 +97,19 @@ public class Post {
 	}
 
 
-	public Integer getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
 
-	public void setCategory(Integer category) {
+	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	@Override
+	public String toString() {
+		return "Post [seq=" + seq + ", title=" + title + ", contents=" + contents + ", date=" + date + ", writer="
+				+ writer + ", viewCount=" + viewCount + ", category=" + category + "]";
 	}
 	
 	

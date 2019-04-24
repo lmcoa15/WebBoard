@@ -124,14 +124,10 @@ public class PostController {
 		post.setContents(content);
 		
 		postService.update(post);
+		String s= null;
+		String v = "a" + s; // "anull"
 		
-//		
-//		List<Post> all = postService.findAll();
-//		req.setAttribute("posts", all);
-		
-		// 리다이렉트로 응답을 보냄! 302 응답!
-//		return "list";
-		return "redirect:/";
+		return "redirect:/"+post.getCategory().getAlias();
 	}
 	
 	@RequestMapping(value="/doWrite", method=RequestMethod.POST)
@@ -201,9 +197,13 @@ public class PostController {
 	
 	@RequestMapping(value="/pageRead", method=RequestMethod.GET)
 	public String pageRead2(
-		@RequestParam Integer pid, HttpServletRequest req ) {
+		@RequestParam Integer pid, @RequestParam String cate, HttpServletRequest req, Model model ) {
 		
-		Post post = postService.findBySeq(pid);
+		List<Category> categoryList = categoryService.findAll();
+		model.addAttribute("categoryList", categoryList);
+		
+		Post post = postService.readPost(pid);
+		post.getCategory();
 		System.out.println("post: " + post);
 		req.setAttribute("post",post);
 		
@@ -213,6 +213,19 @@ public class PostController {
 		
 		req.setAttribute("isWriter", isWriter);
 		
+		/*
+		 * 현재 조회한 게시글이 속한 카테고리가 아니라, 방금전에 보여지던 카테고리를 나타냄
+		 * (전체글을 타고 현재 링크를 클릭했을 수 잇기 때문에 [목록] 링크의 카테고리 별칭(alias) 가 일치하지 않음
+		 * */
+		Category category ;
+		if( "main".equals(cate)) {
+			category = new Category("main", "전체글");
+		} else {
+			category = categoryService.findCategoryByAlias(cate);
+		}
+		
+		req.setAttribute("category", category);
+		
 		return "pageRead"; //internal resource view에서 주어진 문자열로 jsp까지의 경로를 조립합니다.
 	
 	}
@@ -220,15 +233,28 @@ public class PostController {
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String pageMain(HttpServletRequest req, Model model) {
 
+		//게시글 위한 post정보 다시 가져온다.
+		List<Post> posts = postService.findAll();
+		model.addAttribute("posts",posts);
+				
 		List<Category> categoryList = categoryService.findAll();
 		model.addAttribute("categoryList", categoryList);
 		
-		return "main"; 
+		//실제 Category table(DB)에는 없는 전체글 표시하기 위해 설정
+		Category category = new Category();
+		category.setCateName("전체글");
+		category.setAlias("main");
+		
+		model.addAttribute("category", category);
+		return "pagePost"; 
 	}
 	
 	@RequestMapping(value="/pageEdit", method=RequestMethod.GET)
-	public String pageEdit (HttpServletRequest req) {
+	public String pageEdit (HttpServletRequest req, Model model) {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
+		
+		List<Category> categoryList = categoryService.findAll();
+		model.addAttribute("categoryList", categoryList);
 		
 		String value = req.getParameter("pid");
 		Integer seq = Integer.parseInt(value);
@@ -266,7 +292,6 @@ public class PostController {
 		List<Post> posts = postService.findPostsByAlias(value);
 		model.addAttribute("posts",posts);
 		
-		
 		//left-side를 위해 카테고리 정보 다시 가지고 와야한다.
 		List<Category> categoryList = categoryService.findAll();
 		model.addAttribute("categoryList", categoryList);
@@ -275,7 +300,6 @@ public class PostController {
 		Category category = categoryService.findCategoryByAlias(value);
 		model.addAttribute("category", category);
 
-		System.out.println("category :"+ category.getCateName());
 		return "pagePost";
 	}
 	

@@ -73,9 +73,9 @@
 			<c:forEach var="p" items="${posts}">
 			<tr>
 				<td>${p.seq}</td>
-				<td><a href="/example/pageRead?pid=${p.seq }">${p.title}</a></td>
+				<td><a href="/example/pageRead?pid=${p.seq }&cate=${category.alias}">${p.title}</a></td>
 				<td>${p.viewCount}</td>
-				<td>${p.writer}</td> <!-- p.writer : getter 메소드 -->
+				<td>${p.writer.userId}</td> <!-- p.writer : getter 메소드 -->
 				<td>${p.date}</td>
 			</tr>
 			</c:forEach>

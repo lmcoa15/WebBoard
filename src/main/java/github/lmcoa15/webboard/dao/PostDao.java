@@ -75,4 +75,9 @@ public class PostDao {
 		List<Post> posts = session.selectList("PostMapper.findPostsByAlias",value);
 		return posts;
 	}
+
+	public void increaseViewCount(Integer seq) {
+		// TODO Auto-generated method stub
+		session.update("PostMapper.increaseViewCount", seq);
+	}
 }

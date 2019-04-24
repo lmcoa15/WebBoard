@@ -64,14 +64,14 @@
 		
 				<c:if test="${isWriter}"> <!--  req.getAttribute("isWriter"); -->
 					<form>
-						<input type="text" value="${post.title}" name="title" readonly="readonly" disabled>
+						<input type="text" value="${post.title}" name="title" readonly="readonly" disabled> <span>조회수 : ${post.viewCount }</span>
 						<br>
 						<textarea rows="5" cols="40" name="contents" readonly="readonly" disabled>${post.contents}</textarea>
 					</form>
 				</c:if> 
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/main">목록으로</a></div>
+				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/${category.alias}">목록으로</a></div>
 				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/pageEdit?pid=${post.seq}">글수정</a></div>
 				<div class="col-xs-12 col-sm-4"><a class="btn btn-default form-control" href="/example/delete?pid=${post.seq}">글삭제</a></div>
 				

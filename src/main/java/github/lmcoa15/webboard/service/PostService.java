@@ -30,9 +30,17 @@ public class PostService {
 	// Object lock = new Object();
 	public Post findBySeq(Integer seq) {
 		Post p = postDao.findBySeq(seq);
+		/*
 		if(p!=null) {
 			p.setViewCount(p.getViewCount() + 1 ); // 1.5 이상 !!							
 		}
+		*/
+		return p;
+	}
+	
+	public Post readPost(Integer seq) {
+		postDao.increaseViewCount(seq);
+		Post p = findBySeq(seq);
 		return p;
 	}
 

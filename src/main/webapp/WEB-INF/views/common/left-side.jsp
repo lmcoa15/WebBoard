@@ -22,7 +22,7 @@
       </div>
 
 	 <li class="nav-item">
-        <a class="nav-link collapsed" href="#" aria-expanded="true">
+        <a class="nav-link collapsed" href="${pageContext.request.contextPath}/main" aria-expanded="true">
           <i class="fas fa-fw fa-cog"></i>
           <span>전체글</span>
         </a>
