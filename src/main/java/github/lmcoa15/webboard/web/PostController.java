@@ -73,7 +73,7 @@ public class PostController {
 		String uri = req.getRequestURI();
 		System.out.println("uri : " + uri);
 		
-		return "write";
+		return "pageWrite";
 	}
 	
 	@RequestMapping(value="/invalid", method=RequestMethod.GET)
@@ -135,16 +135,30 @@ public class PostController {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
 		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 
-		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-		Date currentTime = new Date ();
-		String mTime = mSimpleDateFormat.format ( currentTime );
+//		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+//		Date currentTime = new Date ();
+//		String mTime = mSimpleDateFormat.format ( currentTime );
 
 
-		//출처: https://includestdio.tistory.com/4 [includestdio]
 		String title = req.getParameter("title");
 		String contents = req.getParameter("contents");
+		String cate = req.getParameter("category");
+
+
+		Post post = new Post(title,contents);
+		User writer = null;
 		
-		Post post = new Post(title,contents); 
+		//글 작성자 저장
+		HttpSession http = req.getSession();
+		User loginUser = (User)http.getAttribute("LOGIN_USER");
+		if(loginUser==null)
+			return "redirect:/login";
+		
+		//카테고리 저장
+		Category category = categoryService.findCategoryByAlias(cate);
+
+		post.setWriter(loginUser);
+		post.setCategory(category);
 		postService.Insert(post);
 		
 //		
@@ -264,12 +278,13 @@ public class PostController {
 		Post post = postService.findBySeq(seq);
 		
 		//DB접근으로 수정
-		//User writer = post.getWriter();
+		User writer = post.getWriter();
+
 		
 		// NULL.method() NUll pointer exception
-//		if(loginUser==null || !loginUser.equals(writer)) {
-//			return "redirect:/invalid?err=NOT_A_WRITER";
-//		}
+		if(loginUser==null || !loginUser.equals(writer)) {
+			return "redirect:/invalid?err=NOT_A_WRITER";
+		}
 		
 		Post p = postService.findBySeq(seq);
 		req.setAttribute("post",p);

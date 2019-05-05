@@ -61,7 +61,10 @@ public class UserController {
 		System.out.println("login결과");
 		System.out.println(loginUser);
 
-		if(loginUser==null) System.out.println("로그인 실패");
+		if(loginUser==null) { 
+			System.out.println("로그인 실패");
+			return "redirect:/login";
+		}
 		else {
 			// session 에 사용자를 담아줘야 합니다.
 			HttpSession session = req.getSession(); // 요청과 요청 사이에도 존속시킬 수 있는 저장공간

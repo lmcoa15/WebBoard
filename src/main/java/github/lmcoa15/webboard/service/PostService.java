@@ -44,8 +44,8 @@ public class PostService {
 		return p;
 	}
 
-	public void Insert(Post newPost) {
-		postDao.insert(newPost);
+	public void Insert(Post post) {
+		postDao.insert(post);
 	}
 	
 	public void update(Post post) {

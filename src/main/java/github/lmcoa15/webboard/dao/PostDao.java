@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,10 +47,14 @@ public class PostDao {
 
 	static int seq = 30000;
 	public void insert(Post post) {
-		// seq 를 가짜로 만들어줌
-		// 지금 등록 시간도 가짜로 넣어줌
 
-		session.insert("PostMapper.write", post);
+		System.out.println(post);
+		HashMap <String,Object> map = new HashMap<String,Object> ();
+		map.put("title", post.getTitle());
+		map.put("contents", post.getContents());
+		map.put("writer", post.getWriter().getSeq());
+		map.put("category", post.getCategory().getSeq());
+		session.insert("PostMapper.write", map);
 	}
 	
 	String curTime() {

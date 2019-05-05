@@ -6,7 +6,7 @@
 
 	<resultMap id="userMap" type="github.lmcoa15.webboard.dto.User">
 		<id property="seq" column="useq"/>
-		<result property="userId" column="user_id"/>
+		<result property="userId" column="userId"/>
 		<result property="password" column="password"/>
 		<result property="email" column="email"/>
 		<result property="joinDate" column="joinDate"/>
@@ -14,7 +14,7 @@
 	
 	<select id="findAll" resultType="github.lmcoa15.webboard.dto.User">
 		select 
-		  user_id AS id,
+		  userId AS id,
 		  email As email,
 		  pass AS password
 		from user;
@@ -23,6 +23,6 @@
 	<select id="login" parameterType="map" resultType="github.lmcoa15.webboard.dto.User">
 		select *
 		from user
-		where user_id=#{userId} and password=#{password};
+		where userId=#{userId} and password=#{password};
 	</select>
 </mapper>

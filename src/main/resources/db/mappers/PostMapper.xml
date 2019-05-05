@@ -59,10 +59,10 @@
 	</select>
 	
 	<insert id="write" parameterType="map">
-	<!--  
-		insert into post ('title','date','writer','contents','counts','category')
-		values(#{})
-		-->
+	 
+		insert into post (title,contents,writer,category)
+		values (#{title},#{contents},#{writer},#{category});
+		
 	</insert>
 	
 	<update id="increaseViewCount" parameterType="Integer">
