@@ -69,18 +69,11 @@ public class PostController {
 	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public String pageWrite (HttpServletRequest req) {
-		// FIXME 로그인 한 사람만 이 페이지를 봐야 합니다.
 		
 		String uri = req.getRequestURI();
 		System.out.println("uri : " + uri);
 		
 		return "pageWrite";
-	}
-	
-	String stripUri(HttpServletRequest req) {
-		String ctxpath = req.getContextPath(); // "/example"
-		String uri = req.getRequestURI();      // "/example/write"
-		return uri.substring(ctxpath.length());
 	}
 
 	@RequestMapping(value="/invalid", method=RequestMethod.GET)
@@ -98,11 +91,6 @@ public class PostController {
 		Integer seq = Integer.parseInt(value);
 		Post post = postService.findBySeq(seq);
 		
-		// FIXME 얘도 인터셉터로 걷어냄
-		HttpSession http = req.getSession();
-		if ( !Util.isWriter(http, post) ) {
-			return "redirect:/invalid?err=NOT_A_WRITER";
-		}
 		req.setAttribute("post",post);
 		
 		return "delete";
@@ -287,9 +275,11 @@ public class PostController {
 		
 		// FIXME 얘도 인터셉터로 빼내고 싶음!
 		// NULL.method() NUll pointer exception
+		/*
 		if(loginUser==null || !loginUser.equals(writer)) {
 			return "redirect:/invalid?err=NOT_A_WRITER";
 		}
+		*/
 		
 		Post p = postService.findBySeq(seq);
 		req.setAttribute("post",p);
