@@ -61,9 +61,10 @@ public class UserController {
 		System.out.println("login결과");
 		System.out.println(loginUser);
 
+		String redirectUrl = "/";
 		if(loginUser==null) { 
 			System.out.println("로그인 실패");
-			return "redirect:/login";
+			redirectUrl= "/login";
 		}
 		else {
 			// session 에 사용자를 담아줘야 합니다.
@@ -72,11 +73,39 @@ public class UserController {
 			session.setAttribute("LOGIN_TIME", System.currentTimeMillis());
 			// session.invalidate(); // 없애라
 			System.out.println("로그인 성공");
+			
+			
+			//원래 가려던 경로가 있을 때 
+			if(session.getAttribute("orignUrl")!=null) {
+				//경로
+				redirectUrl = (String) session.getAttribute("orignUrl");
+				session.removeAttribute("orignUrl"); //다시 없애준다.
+			}
+		}
+		// 코딩 테크닉 관점에서 보면 return을 두군데서 하면 안좋음...
+		
+		return "redirect:"+redirectUrl;
+		
+	}
+	
+	@RequestMapping(value="/myinfo", method=RequestMethod.GET)
+	public String pageMyInfo(HttpServletRequest req ) {
+		
+		// 그대로 똑같이 가져왔음
+		HttpSession http = req.getSession();
+		User loginUser = (User)http.getAttribute("LOGIN_USER");
+		if(loginUser==null) {
+			http.setAttribute("orignUrl", stripUri(req));
+			return "redirect:/login";			
 		}
 		
-		
-		return "redirect:/";
-		
+		return "myinfo"; 
+	}
+	
+	String stripUri(HttpServletRequest req) {
+		String ctxpath = req.getContextPath(); // "/example"
+		String uri = req.getRequestURI();      // "/example/write"
+		return uri.substring(ctxpath.length());
 	}
 	
 }

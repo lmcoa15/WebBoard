@@ -70,12 +70,19 @@ public class PostController {
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public String pageWrite (HttpServletRequest req) {
 		// FIXME 로그인 한 사람만 이 페이지를 봐야 합니다.
+		
 		String uri = req.getRequestURI();
 		System.out.println("uri : " + uri);
 		
 		return "pageWrite";
 	}
 	
+	String stripUri(HttpServletRequest req) {
+		String ctxpath = req.getContextPath(); // "/example"
+		String uri = req.getRequestURI();      // "/example/write"
+		return uri.substring(ctxpath.length());
+	}
+
 	@RequestMapping(value="/invalid", method=RequestMethod.GET)
 	public String pageInvalidReq() {
 		return "invalid";
@@ -91,6 +98,7 @@ public class PostController {
 		Integer seq = Integer.parseInt(value);
 		Post post = postService.findBySeq(seq);
 		
+		// FIXME 얘도 인터셉터로 걷어냄
 		HttpSession http = req.getSession();
 		if ( !Util.isWriter(http, post) ) {
 			return "redirect:/invalid?err=NOT_A_WRITER";
@@ -131,7 +139,7 @@ public class PostController {
 	}
 	
 	@RequestMapping(value="/doWrite", method=RequestMethod.POST)
-	public String pagedoWrite (HttpServletRequest req) throws UnsupportedEncodingException {
+	public String pagedoWrite (HttpServletRequest req, HttpSession http) throws UnsupportedEncodingException {
 		// FIXME 지금 수정하려는 글을 작성한 사람만이 접근할 수 있어야 함!
 		req.setCharacterEncoding("UTF-8"); // 인코딩을 변경해줘야 합니다. 
 
@@ -146,13 +154,9 @@ public class PostController {
 
 
 		Post post = new Post(title,contents);
-		User writer = null;
 		
 		//글 작성자 저장
-		HttpSession http = req.getSession();
 		User loginUser = (User)http.getAttribute("LOGIN_USER");
-		if(loginUser==null)
-			return "redirect:/login";
 		
 		//카테고리 저장
 		Category category = categoryService.findCategoryByAlias(cate);
@@ -281,6 +285,7 @@ public class PostController {
 		User writer = post.getWriter();
 
 		
+		// FIXME 얘도 인터셉터로 빼내고 싶음!
 		// NULL.method() NUll pointer exception
 		if(loginUser==null || !loginUser.equals(writer)) {
 			return "redirect:/invalid?err=NOT_A_WRITER";

@@ -28,7 +28,7 @@
 			u.*,
 			c.alias,
 			c.cateName
-		from POST p, Category c, User u
+		from POST p, Category c, Users u
 		where p.category = c.seq and p.writer =u.seq
 	</select>
 	<!-- resultType="github.lmcoa15.webboard.dto.Post" -->
@@ -40,7 +40,7 @@
 			u.*,
 			c.alias,
 			c.cateName
-		from POST p, Category c, User u
+		from POST p, Category c, Users u
 		where p.category = c.seq and p.seq = #{seq} and p.writer =u.seq
 	</select>
 
@@ -54,7 +54,7 @@
 			c.cateName
 		from category c
 		join post p ON c.seq = p.category
-		join user u ON p.writer = u.seq
+		join users u ON p.writer = u.seq
 		where c.alias = #{id}
 	</select>
 	

@@ -17,12 +17,12 @@
 		  userId AS id,
 		  email As email,
 		  pass AS password
-		from user;
+		from users;
 	</select>
 	
 	<select id="login" parameterType="map" resultType="github.lmcoa15.webboard.dto.User">
 		select *
-		from user
+		from users
 		where userId=#{userId} and password=#{password};
 	</select>
 </mapper>
